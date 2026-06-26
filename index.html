@@ -2545,6 +2545,157 @@
     animation-iteration-count: 1 !important;
   }
   body.reduce-motion #rainCanvas { display: none !important; }
+  /* 管理员后台面板激活时隐藏雨效果（避免遮挡） */
+  body.admin-open #rainCanvas { display: none !important; }
+
+  /* ============= 水印 ============= */
+  /* 开关控制：body[data-watermark="off"] 关闭（默认开启） */
+  body[data-watermark="off"] #betaWatermark { display: none !important; }
+  #betaWatermark {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    user-select: none;
+    z-index: 8500;
+    overflow: hidden;
+    /* 不影响使用，铺满全屏 */
+  }
+  #betaWatermark .wm-cell {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.16);
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.25), 0 0 6px rgba(0, 0, 0, 0.15);
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    transform: rotate(-22deg);
+    transform-origin: center;
+  }
+  /* 后台面板激活时不显示水印 */
+  body.admin-open #betaWatermark { display: none !important; }
+
+  /* ============= 页脚 ============= */
+  .app-footer {
+    margin-top: 40px;
+    padding: 24px 16px 32px;
+    text-align: center;
+    color: rgba(220, 220, 235, 0.65);
+    font-size: 13px;
+    line-height: 1.8;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(10, 12, 24, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px 12px 0 0;
+  }
+  .app-footer a {
+    color: rgba(255, 182, 119, 0.9);
+    text-decoration: none;
+    margin: 0 4px;
+    transition: color 0.2s;
+  }
+  .app-footer a:hover { color: #ffb677; text-decoration: underline; }
+  .app-footer .sep { opacity: 0.4; margin: 0 8px; }
+  .app-footer .footer-credit { margin: 4px 0; }
+  .app-footer .footer-icp { margin-top: 6px; font-size: 12px; opacity: 0.85; }
+  .app-footer .footer-icp img { vertical-align: middle; height: 14px; margin-right: 4px; }
+  /* 后台面板激活时不显示页脚 */
+  body.admin-open .app-footer { display: none !important; }
+
+  /* ============= Trae 投票悬浮弹窗 ============= */
+  /* 开关：body[data-vote="off"] 关闭；localStorage.vote = "off" 永久关闭；vote-min 最小化 */
+  body[data-vote="off"] #voteFab { display: none !important; }
+  #voteFab {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 8600;
+    width: 280px;
+    background: rgba(20, 25, 40, 0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 182, 119, 0.35);
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+    color: #f0f0f5;
+    font-size: 13px;
+    line-height: 1.55;
+    overflow: hidden;
+    animation: voteFabIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes voteFabIn {
+    from { transform: translateY(40px) scale(0.92); opacity: 0; }
+    to   { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  #voteFab.vote-min {
+    width: auto;
+    padding: 0;
+  }
+  #voteFab .vote-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: linear-gradient(90deg, rgba(255, 138, 101, 0.18) 0%, rgba(93, 196, 255, 0.12) 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  #voteFab .vote-icon { font-size: 18px; }
+  #voteFab .vote-title {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #ffb677 0%, #5dc4ff 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  #voteFab .vote-btns { display: flex; gap: 4px; }
+  #voteFab .vote-btn {
+    width: 22px; height: 22px;
+    border: 0;
+    background: rgba(255, 255, 255, 0.08);
+    color: #d0d0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    line-height: 1;
+    transition: all 0.2s;
+  }
+  #voteFab .vote-btn:hover { background: rgba(255, 182, 119, 0.3); color: #fff; }
+  #voteFab .vote-body {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #voteFab.vote-min .vote-body { display: none; }
+  #voteFab .vote-text { color: rgba(240, 240, 245, 0.85); }
+  #voteFab .vote-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 12px;
+    background: linear-gradient(135deg, #ff8a65 0%, #5dc4ff 100%);
+    color: #fff !important;
+    text-decoration: none !important;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(255, 138, 101, 0.3);
+  }
+  #voteFab .vote-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(255, 138, 101, 0.45);
+  }
+  #voteFab .vote-credit { font-size: 11px; color: rgba(220, 220, 235, 0.5); text-align: center; }
+  /* 后台模式不显示 */
+  body.admin-open #voteFab { display: none !important; }
+  /* 移动端缩小 */
+  @media (max-width: 600px) {
+    #voteFab { right: 12px; bottom: 12px; width: 240px; font-size: 12px; }
+  }
 
   /* 文字加粗 */
   body.bold-text,
@@ -2611,6 +2762,8 @@
   body.guest-mode .auth-only { display: none !important; }
   body.guest-mode #a11yBar { display: none !important; }
   body.guest-mode #userActions { display: none !important; }
+  /* 管理员专属：非管理员时隐藏后台入口 */
+  body:not(.is-admin) .admin-only { display: none !important; }
   body.guest-mode #guestActions { display: flex !important; }
   body.logged-in #guestActions { display: none !important; }
   body.logged-in #userActions { display: flex !important; }
@@ -2977,6 +3130,31 @@
   .smile-action-btn.loading {
     background: rgba(255, 183, 77, 0.18);
     border-color: #ffb74d;
+  }
+  .smile-btn-pause {
+    margin-top: 6px;
+    background: rgba(255, 255, 255, 0.02);
+    font-size: 12px;
+    height: 32px;
+    color: #aaa;
+  }
+  .smile-btn-pause.paused {
+    background: rgba(76, 175, 80, 0.18);
+    border-color: #66bb6a;
+    color: #c8e6c9;
+  }
+  .smile-btn-pause.paused::before {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: #66bb6a;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: smilePausePulse 1.5s ease-in-out infinite;
+  }
+  @keyframes smilePausePulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
   }
 
   .smile-gauge {
@@ -3533,6 +3711,487 @@
     border-radius: 50%;
   }
 
+
+/* ============= 后台管理（合并）============= */
+/* 注意：原 admin.html 的全局 body 样式已删除（避免覆盖主页面的全局样式）*/
+/* 改用 #adminPanel 内部的 .adm-app 设置背景 */
+
+  /* ============= 登录页 ============= */
+  .adm-login-wrap {
+    position: fixed; inset: 0;
+    display: none;  /* 默认隐藏，只在管理员未登录 adminSession 时显示 */
+    align-items: center; justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .adm-login-wrap.adm-active { display: flex; }
+  .adm-login-card {
+    width: 100%; max-width: 420px;
+    background: rgba(20, 25, 40, 0.55);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 40px 36px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: adm-fadeIn 0.4s ease;
+  }
+  @keyframes adm-fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .adm-login-logo {
+    text-align: center;
+    font-size: 48px;
+    margin-bottom: 8px;
+  }
+  .adm-login-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, #ffb677 0%, #ff8a65 50%, #5dc4ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .adm-login-sub {
+    text-align: center;
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .adm-form-row {
+    margin-bottom: 18px;
+  }
+  .adm-form-label {
+    display: block;
+    font-size: 13px;
+    color: #b0b0c0;
+    margin-bottom: 6px;
+  }
+  .adm-form-input, .adm-form-textarea, .adm-form-select {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f0f0f5;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .adm-form-input:focus, .adm-form-textarea:focus, .adm-form-select:focus {
+    outline: none;
+    border-color: #ff8a65;
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .adm-form-textarea { min-height: 80px; resize: vertical; }
+  .adm-form-tip {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+  }
+  .adm-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px 18px;
+    border: none; border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #f0f0f5;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .adm-btn:hover { background: rgba(255, 255, 255, 0.1); }
+  .adm-btn-primary {
+    background: linear-gradient(135deg, #ff8a65 0%, #ff5e9c 100%);
+    color: #fff;
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .adm-btn-primary:hover { filter: brightness(1.1); }
+  .adm-btn-sm { padding: 6px 12px; font-size: 12px; }
+  .adm-btn-danger { background: rgba(239, 83, 80, 0.18); color: #ef9a9a; }
+  .adm-btn-danger:hover { background: rgba(239, 83, 80, 0.28); }
+  .adm-btn-success { background: rgba(76, 175, 80, 0.18); color: #a5d6a7; }
+  .adm-btn-success:hover { background: rgba(76, 175, 80, 0.28); }
+  .adm-btn-ghost { background: transparent; }
+  .adm-login-hint {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background: rgba(255, 183, 77, 0.08);
+    border: 1px solid rgba(255, 183, 77, 0.2);
+    border-radius: 8px;
+    color: #ffb74d;
+    font-size: 12px;
+  }
+  .adm-login-hint strong { color: #ffcc80; }
+
+  /* ============= 后台布局 ============= */
+  .adm-app {
+    display: none;
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    color: #f0f0f5;
+    background:
+      radial-gradient(ellipse at 15% 10%, rgba(255, 138, 101, 0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 20%, rgba(79, 195, 247, 0.16) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 90%, rgba(174, 213, 129, 0.14) 0%, transparent 60%),
+      linear-gradient(135deg, #0a0e1a 0%, #131826 50%, #1a1530 100%);
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Source Han Sans CN', 'Noto Sans CJK SC', 'WenQuanYi Micro Hei', sans-serif;
+    line-height: 1.6;
+    font-size: 14px;
+  }
+  .adm-app.adm-active { display: block; animation: adm-fadeIn 0.3s ease; }
+
+  /* ============= 后台面板：fixed 全屏覆盖，绕过主页 main 容器限制 ============= */
+  #adminPanel {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: transparent;
+  }
+  #adminPanel > .adm-app {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+  }
+  #adminPanel > .adm-login-wrap {
+    margin: 0;
+  }
+  .adm-topbar {
+    position: sticky; top: 0; z-index: 50;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    background: rgba(10, 14, 26, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .adm-topbar-left { display: flex; align-items: center; gap: 12px; }
+  .adm-topbar-logo { font-size: 24px; }
+  .adm-topbar-title {
+    font-size: 16px; font-weight: 600;
+    background: linear-gradient(135deg, #ffb677 0%, #5dc4ff 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .adm-topbar-sub { font-size: 12px; color: #888; }
+  .adm-topbar-right { display: flex; align-items: center; gap: 12px; font-size: 13px; }
+  .adm-topbar-admin { color: #b0b0c0; }
+  .adm-topbar-admin strong { color: #ffb677; }
+
+  .adm-main { display: flex; min-height: calc(100vh - 60px); height: calc(100% - 60px); }
+  .adm-sidebar {
+    width: 220px; flex-shrink: 0;
+    background: rgba(15, 20, 35, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 16px 12px;
+  }
+  .adm-nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    color: #b0b0c0;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    user-select: none;
+    margin-bottom: 4px;
+  }
+  .adm-nav-item:hover { background: rgba(255, 255, 255, 0.04); color: #f0f0f5; }
+  .adm-nav-item.adm-active {
+    background: linear-gradient(90deg, rgba(255, 138, 101, 0.18) 0%, rgba(255, 138, 101, 0.04) 100%);
+    color: #ffb677;
+    border-left: 3px solid #ff8a65;
+    padding-left: 11px;
+  }
+  .adm-nav-icon { font-size: 18px; width: 22px; text-align: center; }
+  .adm-nav-badge {
+    margin-left: auto;
+    background: rgba(239, 83, 80, 0.6);
+    color: #fff;
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 8px;
+    min-width: 18px; text-align: center;
+  }
+
+  .adm-content {
+    flex: 1;
+    padding: 24px 28px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+  }
+  .adm-page { display: none; animation: adm-fadeIn 0.25s ease; }
+  .adm-page.adm-active { display: block; }
+  .adm-page-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .adm-page-title { font-size: 22px; font-weight: 600; }
+  .adm-page-sub { font-size: 13px; color: #888; margin-top: 2px; }
+
+  /* ============= 通用卡片 ============= */
+  .adm-card {
+    background: rgba(20, 25, 40, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .adm-card-title {
+    font-size: 14px; font-weight: 500;
+    color: #d0d0e0;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .adm-card-title-icon { font-size: 16px; }
+
+  /* ============= 仪表盘 ============= */
+  .adm-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .adm-stat-card {
+    background: rgba(20, 25, 40, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .adm-stat-card:hover { transform: translateY(-2px); }
+  .adm-stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--accent, #ff8a65);
+  }
+  .adm-stat-icon { font-size: 28px; margin-bottom: 8px; }
+  .adm-stat-label { font-size: 12px; color: #888; margin-bottom: 4px; }
+  .adm-stat-value { font-size: 28px; font-weight: 600; line-height: 1.2; }
+  .adm-stat-trend { font-size: 12px; color: #a5d6a7; margin-top: 4px; }
+
+  .adm-charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 1100px) { .adm-charts-grid { grid-template-columns: 1fr; } }
+  .adm-chart-wrap { position: relative; height: 280px; }
+  .adm-chart-canvas { width: 100%; height: 100%; }
+  .adm-chart-legend {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    margin-top: 12px;
+    font-size: 12px;
+  }
+  .adm-chart-legend-item {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .adm-chart-legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  /* ============= 表格 ============= */
+  .adm-table-toolbar {
+    display: flex; align-items: center; gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .adm-search-input {
+    flex: 1; min-width: 200px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    color: #f0f0f5;
+    font-size: 13px;
+    font-family: inherit;
+  }
+  .adm-search-input:focus { outline: none; border-color: #ff8a65; }
+  .adm-table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #b0b0c0;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    white-space: nowrap;
+  }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: #d0d0e0;
+    vertical-align: middle;
+  }
+  tr:hover td { background: rgba(255, 255, 255, 0.02); }
+  .adm-pill {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .adm-pill-success { background: rgba(76, 175, 80, 0.18); color: #a5d6a7; }
+  .adm-pill-warn    { background: rgba(255, 183, 77, 0.18); color: #ffcc80; }
+  .adm-pill-danger  { background: rgba(239, 83, 80, 0.18); color: #ef9a9a; }
+  .adm-pill-info    { background: rgba(79, 195, 247, 0.18); color: #90caf9; }
+  .adm-pill-neutral { background: rgba(255, 255, 255, 0.08); color: #b0b0c0; }
+
+  .adm-row-actions { display: flex; gap: 6px; }
+  .adm-icon-btn {
+    width: 28px; height: 28px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: none; border-radius: 6px;
+    color: #b0b0c0;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+  .adm-icon-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+  .adm-icon-btn.adm-danger:hover { background: rgba(239, 83, 80, 0.3); color: #ef9a9a; }
+
+  /* ============= Toast ============= */
+  .adm-toast-host {
+    position: fixed; top: 80px; right: 24px;
+    z-index: 9999;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .adm-toast {
+    padding: 10px 16px;
+    background: rgba(20, 25, 40, 0.92);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f0f0f5;
+    font-size: 13px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    animation: adm-slideIn 0.25s ease;
+    min-width: 200px;
+  }
+  .adm-toast.adm-success { border-left: 3px solid #66bb6a; }
+  .adm-toast.adm-error   { border-left: 3px solid #ef5350; }
+  .adm-toast.adm-warn    { border-left: 3px solid #ffb74d; }
+  @keyframes adm-slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  /* ============= 弹窗 ============= */
+  .adm-modal-mask {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .adm-modal-mask.adm-active { display: flex; animation: adm-fadeIn 0.2s ease; }
+  .adm-modal {
+    background: rgba(20, 25, 40, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 22px 24px;
+    width: 100%; max-width: 480px;
+    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  }
+  .adm-modal-title {
+    font-size: 16px; font-weight: 600;
+    margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .adm-modal-close {
+    background: none; border: none;
+    color: #888; font-size: 22px;
+    cursor: pointer; line-height: 1;
+  }
+  .adm-modal-close:hover { color: #fff; }
+  .adm-modal-footer {
+    display: flex; gap: 8px; justify-content: flex-end;
+    margin-top: 18px;
+  }
+
+  /* ============= 素材管理 ============= */
+  .adm-media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .adm-media-tile {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .adm-media-preview {
+    height: 140px;
+    background: rgba(0, 0, 0, 0.3) center/contain no-repeat;
+    display: flex; align-items: center; justify-content: center;
+    color: #555; font-size: 13px;
+  }
+  .adm-media-info { padding: 12px; }
+  .adm-media-name { font-size: 13px; margin-bottom: 8px; color: #d0d0e0; }
+  .adm-media-actions { display: flex; gap: 6px; }
+
+  /* ============= 配色变量 ============= */
+  :root {
+    --emotion-happy: #ffb74d;
+    --emotion-anxious: #5dc4ff;
+    --emotion-tired: #b39ddb;
+    --emotion-angry: #ef5350;
+    --emotion-sad: #90a4ae;
+    --emotion-calm: #81c784;
+  }
+
+  /* ============= 响应式 ============= */
+  @media (max-width: 760px) {
+    .adm-main { flex-direction: column; }
+    .adm-sidebar {
+      width: 100%;
+      display: flex; overflow-x: auto;
+      padding: 10px;
+      border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .adm-nav-item { flex-shrink: 0; margin-bottom: 0; }
+    .adm-nav-item.adm-active { border-left: none; border-bottom: 3px solid #ff8a65; padding-left: 14px; }
+    .adm-content { padding: 16px; }
+    .adm-topbar { padding: 0 12px; }
+    .adm-topbar-sub { display: none; }
+  }
+
 </style>
 </head>
 <body>
@@ -3552,6 +4211,8 @@
     <button data-panel="communityPanel" class="auth-only"><span class="nav-icon">💬</span><span class="nav-text">社区</span></button>
     <button data-panel="archivePanel" class="auth-only"><span class="nav-icon">📅</span><span class="nav-text">时光</span></button>
     <button data-panel="smilePanel"><span class="nav-icon">✨</span><span class="nav-text">笑容</span></button>
+    <!-- 管理员专属入口 -->
+    <button data-panel="adminPanel" class="admin-only" data-requires-admin="1"><span class="nav-icon">🛠</span><span class="nav-text">后台</span></button>
   </nav>
   <div class="topbar-right">
     <!-- 未登录显示：登录/注册 合并为药丸按钮组 -->
@@ -4134,6 +4795,7 @@
         <div class="smile-section">
           <div class="smile-label">手势</div>
           <button class="smile-action-btn" id="smileBtnCam">📷 启用手势</button>
+          <button class="smile-action-btn smile-btn-pause" id="smileBtnPause">⏸ 暂停手势</button>
           <div class="smile-gauge"><div class="smile-gauge-fill" id="smileGaugeFill"></div></div>
           <div class="smile-gauge-value" id="smileGaugeValue">点击切换 / 拖动浏览</div>
         </div>
@@ -4232,7 +4894,396 @@
     </div>
 
 
-  </main>
+
+<!-- ========== 管理后台（合并自 admin.html） ========== -->
+<div class="panel" id="adminPanel">
+
+
+<!-- ============= 登录页 ============= -->
+<div class="adm-login-wrap" id="adm-loginWrap">
+  <div class="adm-login-card">
+    <div class="adm-login-logo">🌳</div>
+    <div class="adm-login-title">光影巨树 · 管理后台</div>
+    <div class="adm-login-sub">Grassroots Workers Mutual Aid · Admin</div>
+    <form id="adm-loginForm" autocomplete="off">
+      <div class="adm-form-row">
+        <label class="adm-form-label">管理员账号</label>
+        <input class="adm-form-input" type="text" id="adm-loginUser" placeholder="admin" required autocomplete="username" />
+      </div>
+      <div class="adm-form-row">
+        <label class="adm-form-label">密码</label>
+        <input class="adm-form-input" type="password" id="adm-loginPwd" placeholder="admin123" required autocomplete="current-password" />
+      </div>
+      <button class="adm-btn adm-btn-primary" type="submit">🔐 登录管理后台</button>
+    </form>
+    <div class="adm-login-hint">
+      默认管理员账号：<strong>admin</strong> / <strong>admin123</strong><br>
+      数据与 <code>index.html</code> 共享 localStorage
+    </div>
+  </div>
+</div>
+
+<!-- ============= 后台 ============= -->
+<div class="adm-app" id="adm-app">
+  <div class="adm-topbar">
+    <div class="adm-topbar-left">
+      <span class="adm-topbar-logo">🌳</span>
+      <div>
+        <div class="adm-topbar-title">光影巨树 · 管理后台</div>
+        <div class="adm-topbar-sub">基层务工群体互助平台</div>
+      </div>
+    </div>
+    <div class="adm-topbar-right">
+      <a href="javascript:void(0)" onclick="App.closeAdmin && App.closeAdmin(); return false;" class="adm-btn adm-btn-ghost adm-btn-sm" title="返回用户端">↩ 返回用户端</a>
+      <span class="adm-topbar-admin">👤 <strong id="adm-topbarAdmin">admin</strong></span>
+      <button class="adm-btn adm-btn-sm" id="adm-btnLogout">退出</button>
+    </div>
+  </div>
+
+  <div class="adm-main">
+    <nav class="adm-sidebar">
+      <div class="adm-nav-item adm-active" data-page="dashboard">
+        <span class="adm-nav-icon">📊</span><span>仪表盘</span>
+      </div>
+      <div class="adm-nav-item" data-page="users">
+        <span class="adm-nav-icon">👥</span><span>用户管理</span>
+        <span class="adm-nav-badge" id="adm-badgeUsers">0</span>
+      </div>
+      <div class="adm-nav-item" data-page="content">
+        <span class="adm-nav-icon">📝</span><span>页面内容</span>
+      </div>
+      <div class="adm-nav-item" data-page="media">
+        <span class="adm-nav-icon">🎨</span><span>素材管理</span>
+      </div>
+      <div class="adm-nav-item" data-page="record">
+        <span class="adm-nav-icon">🛡</span><span>备案管理</span>
+      </div>
+      <div class="adm-nav-item" data-page="audit">
+        <span class="adm-nav-icon">🚨</span><span>AI 审核日志</span>
+        <span class="adm-nav-badge" id="adm-badgeAudit" style="display:none;">0</span>
+      </div>
+      <div class="adm-nav-item" data-page="settings">
+        <span class="adm-nav-icon">⚙️</span><span>系统设置</span>
+      </div>
+    </nav>
+
+    <main class="adm-content">
+      <!-- 仪表盘 -->
+      <section class="adm-page adm-active" id="adm-page-dashboard">
+        <div class="adm-page-header">
+          <div>
+            <div class="adm-page-title">📊 仪表盘</div>
+            <div class="adm-page-sub">实时数据概览 · 数据来源：本地 localStorage</div>
+          </div>
+          <button class="adm-btn adm-btn-sm" id="adm-btnRefreshDash">🔄 刷新</button>
+        </div>
+
+        <div class="adm-stats-grid" id="adm-statsGrid">
+          <div class="adm-stat-card" style="--accent: #ff8a65;">
+            <div class="adm-stat-icon">👥</div>
+            <div class="adm-stat-label">注册用户</div>
+            <div class="adm-stat-value" id="adm-statUsers">0</div>
+            <div class="adm-stat-trend" id="adm-statUsersTrend">—</div>
+          </div>
+          <div class="adm-stat-card" style="--accent: #5dc4ff;">
+            <div class="adm-stat-icon">🌳</div>
+            <div class="adm-stat-label">倾诉果实</div>
+            <div class="adm-stat-value" id="adm-statStories">0</div>
+            <div class="adm-stat-trend" id="adm-statStoriesTrend">—</div>
+          </div>
+          <div class="adm-stat-card" style="--accent: #aed581;">
+            <div class="adm-stat-icon">💬</div>
+            <div class="adm-stat-label">社区帖子</div>
+            <div class="adm-stat-value" id="adm-statPosts">0</div>
+            <div class="adm-stat-trend" id="adm-statPostsTrend">—</div>
+          </div>
+          <div class="adm-stat-card" style="--accent: #ffb74d;">
+            <div class="adm-stat-icon">✨</div>
+            <div class="adm-stat-label">今日新增</div>
+            <div class="adm-stat-value" id="adm-statToday">0</div>
+            <div class="adm-stat-trend">故事 + 帖子</div>
+          </div>
+        </div>
+
+        <div class="adm-charts-grid">
+          <div class="adm-card">
+            <div class="adm-card-title"><span class="adm-card-title-icon">🎭</span>情绪分布（饼图）</div>
+            <div class="adm-chart-wrap"><canvas id="adm-chartEmotion" class="adm-chart-canvas"></canvas></div>
+            <div class="adm-chart-legend" id="adm-legendEmotion"></div>
+          </div>
+          <div class="adm-card">
+            <div class="adm-card-title"><span class="adm-card-title-icon">👷</span>职业分布（柱状图）</div>
+            <div class="adm-chart-wrap"><canvas id="adm-chartProfession" class="adm-chart-canvas"></canvas></div>
+          </div>
+        </div>
+
+        <div class="adm-card">
+          <div class="adm-card-title"><span class="adm-card-title-icon">📈</span>近 7 日活跃（折线图）</div>
+          <div class="adm-chart-wrap" style="height: 220px;"><canvas id="adm-chartTrend" class="adm-chart-canvas"></canvas></div>
+        </div>
+      </section>
+
+      <!-- 用户管理 -->
+      <section class="adm-page" id="adm-page-users">
+        <div class="adm-page-header">
+          <div>
+            <div class="adm-page-title">👥 用户管理</div>
+            <div class="adm-page-sub">查看、封禁、重置密码</div>
+          </div>
+        </div>
+        <div class="adm-card">
+          <div class="adm-table-toolbar">
+            <input class="adm-search-input" id="adm-userSearch" placeholder="🔍 搜索用户名 / 职业" />
+            <select class="adm-form-select" id="adm-userFilter" style="width: 140px;">
+              <option value="all">全部状态</option>
+              <option value="active">正常</option>
+              <option value="banned">已封禁</option>
+            </select>
+            <button class="adm-btn adm-btn-sm" id="adm-btnExportUsers">📤 导出用户</button>
+          </div>
+          <div class="adm-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>用户名</th>
+                  <th>职业</th>
+                  <th>年龄段</th>
+                  <th>倾诉数</th>
+                  <th>注册时间</th>
+                  <th>状态</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="adm-userTableBody"></tbody>
+            </table>
+          </div>
+          <div style="margin-top: 12px; font-size: 12px; color: #888;" id="adm-userTableInfo">共 0 名用户</div>
+        </div>
+      </section>
+
+      <!-- 页面内容 -->
+      <section class="adm-page" id="adm-page-content">
+        <div class="adm-page-header">
+          <div>
+            <div class="adm-page-title">📝 页面内容</div>
+            <div class="adm-page-sub">编辑 Banner、欢迎语、底部信息</div>
+          </div>
+          <button class="adm-btn adm-btn-primary adm-btn-sm" id="adm-btnSaveContent" style="width: auto;">💾 保存修改</button>
+        </div>
+        <div class="adm-card">
+          <div class="adm-form-row">
+            <label class="adm-form-label">Banner 主标题</label>
+            <input class="adm-form-input" id="adm-cfgBanner" maxlength="40" />
+            <div class="adm-form-tip">顶部主标题，建议 20 字以内</div>
+          </div>
+          <div class="adm-form-row">
+            <label class="adm-form-label">Banner 副标题</label>
+            <input class="adm-form-input" id="adm-cfgWelcome" maxlength="60" />
+            <div class="adm-form-tip">副标题/欢迎语</div>
+          </div>
+          <div class="adm-form-row">
+            <label class="adm-form-label">底部版权 / 声明</label>
+            <textarea class="adm-form-textarea" id="adm-cfgFooter" maxlength="200"></textarea>
+            <div class="adm-form-tip">页脚展示的版权或说明文字</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 素材管理 -->
+      <section class="adm-page" id="adm-page-media">
+        <div class="adm-page-header">
+          <div>
+            <div class="adm-page-title">🎨 素材管理</div>
+            <div class="adm-page-sub">Logo / 背景图 上传（base64 持久化）</div>
+          </div>
+        </div>
+        <div class="adm-card">
+          <div class="adm-media-grid">
+            <div class="adm-media-tile">
+              <div class="adm-media-preview" id="adm-logoPreview">未设置</div>
+              <div class="adm-media-info">
+                <div class="adm-media-name">🌟 网站 Logo</div>
+                <div class="adm-media-actions">
+                  <input type="file" accept="image/*" id="adm-fileLogo" style="display:none;" />
+                  <button class="adm-btn adm-btn-sm" id="adm-btnUploadLogo">📤 上传</button>
+                  <button class="adm-btn adm-btn-sm adm-btn-danger" id="adm-btnClearLogo">🗑 清除</button>
+                </div>
+              </div>
+            </div>
+            <div class="adm-media-tile">
+              <div class="adm-media-preview" id="adm-bgPreview">未设置</div>
+              <div class="adm-media-info">
+                <div class="adm-media-name">🖼 背景图（用户端 body）</div>
+                <div class="adm-media-actions">
+                  <input type="file" accept="image/*" id="adm-fileBg" style="display:none;" />
+                  <button class="adm-btn adm-btn-sm" id="adm-btnUploadBg">📤 上传</button>
+                  <button class="adm-btn adm-btn-sm adm-btn-danger" id="adm-btnClearBg">🗑 清除</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 备案管理 -->
+      <section class="adm-page" id="adm-page-record">
+        <div class="adm-page-header">
+          <div>
+            <div class="adm-page-title">🛡 备案管理</div>
+            <div class="adm-page-sub">ICP / 公安备案号</div>
+          </div>
+          <button class="adm-btn adm-btn-primary adm-btn-sm" id="adm-btnSaveRecord" style="width: auto;">💾 保存</button>
+        </div>
+        <div class="adm-card">
+          <div class="adm-form-row">
+            <label class="adm-form-label">ICP 备案号</label>
+            <input class="adm-form-input" id="adm-cfgICP" placeholder="例如：京ICP备12345678号" maxlength="40" />
+            <div class="adm-form-tip">工业和信息化部备案</div>
+          </div>
+          <div class="adm-form-row">
+            <label class="adm-form-label">公安备案号</label>
+            <input class="adm-form-input" id="adm-cfgPolice" placeholder="例如：京公网安备 11010102000000号" maxlength="60" />
+            <div class="adm-form-tip">公安机关联网备案</div>
+          </div>
+          <div class="adm-form-row">
+            <label class="adm-form-label">备案跳转链接（可选）</label>
+            <input class="adm-form-input" id="adm-cfgRecordLink" placeholder="https://beian.miit.gov.cn/" maxlength="200" />
+            <div class="adm-form-tip">用户点击 ICP 编号时跳转</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI 审核日志 -->
+      <section class="adm-page" id="adm-page-audit">
+        <div class="adm-page-header">
+          <div>
+            <div class="adm-page-title">🚨 AI 审核日志</div>
+            <div class="adm-page-sub">所有 AI 审核记录 · 共 <span id="adm-auditTotalCount">0</span> 条</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="adm-btn adm-btn-sm" id="adm-btnExportAudit">📤 导出</button>
+            <button class="adm-btn adm-btn-sm adm-btn-danger" id="adm-btnClearAudit">🗑 清空</button>
+          </div>
+        </div>
+        <div class="adm-card">
+          <div class="adm-table-toolbar">
+            <input class="adm-search-input" id="adm-auditSearch" placeholder="🔍 搜索内容 / 用户 / 关键词" />
+            <select class="adm-form-select" id="adm-auditFilter" style="width: 140px;">
+              <option value="all">全部</option>
+              <option value="block">🚫 拦截</option>
+              <option value="pass">✅ 通过</option>
+            </select>
+          </div>
+          <div class="adm-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>用户</th>
+                  <th>内容</th>
+                  <th>触发词</th>
+                  <th>结果</th>
+                </tr>
+              </thead>
+              <tbody id="adm-auditTableBody"></tbody>
+            </table>
+          </div>
+          <div style="margin-top: 12px; font-size: 12px; color: #888;" id="adm-auditTableInfo">共 0 条记录</div>
+        </div>
+      </section>
+
+      <!-- 系统设置 -->
+      <section class="adm-page" id="adm-page-settings">
+        <div class="adm-page-header">
+          <div>
+            <div class="adm-page-title">⚙️ 系统设置</div>
+            <div class="adm-page-sub">站点开关 · 数据管理</div>
+          </div>
+        </div>
+
+        <div class="adm-card">
+          <div class="adm-card-title"><span class="adm-card-title-icon">🔧</span>站点功能</div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+            <label class="adm-form-row" style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+              <input type="checkbox" id="adm-cfgAllowRegister" />
+              <span>允许新用户注册</span>
+            </label>
+            <label class="adm-form-row" style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+              <input type="checkbox" id="adm-cfgAllowPost" />
+              <span>允许发布倾诉 / 帖子</span>
+            </label>
+            <label class="adm-form-row" style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+              <input type="checkbox" id="adm-cfgEnableAI" />
+              <span>启用 AI 共情推理</span>
+            </label>
+            <label class="adm-form-row" style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+              <input type="checkbox" id="adm-cfgEnableAudit" />
+              <span>启用 AI 内容审核</span>
+            </label>
+          </div>
+          <div style="margin-top: 14px;">
+            <button class="adm-btn adm-btn-primary adm-btn-sm" id="adm-btnSaveSettings" style="width: auto;">💾 保存设置</button>
+          </div>
+        </div>
+
+        <div class="adm-card">
+          <div class="adm-card-title"><span class="adm-card-title-icon">💾</span>数据管理</div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="adm-btn adm-btn-sm" id="adm-btnExportAll">📤 导出全部数据（JSON）</button>
+            <button class="adm-btn adm-btn-sm" id="adm-btnImportAll">📥 导入数据</button>
+            <input type="file" id="adm-importFile" accept="application/json" style="display:none;" />
+            <button class="adm-btn adm-btn-sm adm-btn-danger" id="adm-btnClearAll">🗑 清空所有数据（不可恢复）</button>
+          </div>
+          <div class="adm-form-tip" style="margin-top: 10px;">
+            导出会保存 users / stories / posts / comments / aiReviewLog / siteConfig 等全部键值<br>
+            清空操作将删除整个浏览器 localStorage 中的项目数据
+          </div>
+        </div>
+
+        <div class="adm-card">
+          <div class="adm-card-title"><span class="adm-card-title-icon">🔐</span>修改管理员密码</div>
+          <div class="adm-form-row">
+            <label class="adm-form-label">当前密码</label>
+            <input class="adm-form-input" type="password" id="adm-oldAdminPwd" />
+          </div>
+          <div class="adm-form-row">
+            <label class="adm-form-label">新密码（至少 6 位）</label>
+            <input class="adm-form-input" type="password" id="adm-newAdminPwd" />
+          </div>
+          <div class="adm-form-row">
+            <label class="adm-form-label">确认新密码</label>
+            <input class="adm-form-input" type="password" id="adm-cfmAdminPwd" />
+          </div>
+          <button class="adm-btn adm-btn-primary adm-btn-sm" id="adm-btnChangeAdminPwd" style="width: auto;">🔑 修改密码</button>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- 通用弹窗 -->
+<div class="adm-modal-mask" id="adm-modalMask">
+  <div class="adm-modal" id="adm-modalContent"></div>
+</div>
+
+<!-- Toast 容器 -->
+<div class="adm-toast-host" id="adm-toastHost"></div>
+
+
+</div>
+
+  <!-- 页脚：致谢 / 原创 / 萌ICP 备案 -->
+  <footer class="app-footer" id="appFooter">
+    <div class="footer-credit">
+      由 <strong>用户 linden_thomas_lin</strong> 原创
+      <span class="sep">·</span>
+      感谢 <a href="https://www.trae.ai" target="_blank" rel="noopener">Trae AI</a> 与 <a href="https://www.bytedance.com" target="_blank" rel="noopener">字节跳动</a> 的支持与赞助
+    </div>
+    <div class="footer-icp">
+      <a href="https://icp.gov.moe/?keyword=20260358" target="_blank" rel="noopener">萌ICP备20260358号</a>
+    </div>
+  </footer>
+</main>
 </div>
 
 <!-- ========== 通用弹窗（详情/留言/发帖等） ========== -->
@@ -5766,7 +6817,7 @@ class TreeRenderer {
         }).join('')}
       </div>
       <div class="modal-actions">
-        <button class="secondary" onclick="closeModal()">关闭</button>
+        <button class="secondary" onclick="adm_closeModal()">关闭</button>
       </div>
     `);
   }
@@ -6142,6 +7193,10 @@ const App = {
   init() {
     /* 数据保存指示器（每次 Storage.set 触发） */
     App._lastSaveAt = 0;
+    /* 初始化水印（默认开启；通过 localStorage.watermark = 'false' 关闭） */
+    App._initWatermark();
+    /* 初始化 Trae 投票悬浮弹窗 */
+    App._initVoteFab();
     /* 先初始化数据（在所有事件绑定之前，避免 App 未定义的报错） */
     if (typeof initData === 'function') initData();
     /* 启动无障碍悬浮小球 + 应用无障碍设置 */
@@ -6328,6 +7383,7 @@ const App = {
     /* 未登录：仅显示首页，导航栏只显示 首页 + 登录 + 注册 */
     document.body.classList.add('guest-mode');
     document.body.classList.remove('logged-in');
+    document.body.classList.remove('is-admin');
     $('appView').style.display = 'block';
     $('authView') && ($('authView').style.display = 'none');
     /* 关闭所有语音/摄像头 */
@@ -6391,6 +7447,19 @@ const App = {
     if (!cur) return App.enterGuest();
     document.body.classList.add('logged-in');
     document.body.classList.remove('guest-mode');
+    /* 管理员专属：body 加 is-admin 显示后台入口 */
+    if (cur.role === 'admin') {
+      document.body.classList.add('is-admin');
+      /* 同步创建 adminSession（这样进入后台无需重复登录） */
+      try {
+        localStorage.setItem('adminSession', JSON.stringify({
+          id: cur.id, username: cur.username, loginAt: Date.now()
+        }));
+      } catch (e) {}
+    } else {
+      document.body.classList.remove('is-admin');
+      try { localStorage.removeItem('adminSession'); } catch (e) {}
+    }
     /* authView 已移除到弹窗，无需操作 */
     const authView = $('authView');
     if (authView) authView.style.display = 'none';
@@ -6411,6 +7480,8 @@ const App = {
     if ($('menuMeta')) $('menuMeta').textContent = (u ? (u.profession || '未填写') + ' · ' + (u.ageGroup || '未填写') : '') + (cur.role === 'admin' ? ' · 管理员' : '');
     /* 管理员后台入口：仅 admin 可见 */
     if ($('menuItemAdmin')) $('menuItemAdmin').style.display = cur.role === 'admin' ? 'flex' : 'none';
+    /* body.is-admin 类：用于主菜单栏显示"🛠 后台"按钮 */
+    document.body.classList.toggle('is-admin', cur.role === 'admin');
     /* 填充职业筛选 */
     const professions = ['外卖员','快递员','工厂工人','建筑工','家政','网约车司机','其他'];
     [$('storyFilterProfession'), $('treeFilterProfession')].forEach(sel => {
@@ -6639,7 +7710,7 @@ const App = {
         <div style="text-align:center;padding:10px;background:rgba(46,204,113,0.1);border-radius:8px;"><div style="font-size:20px;font-weight:bold;">${replies.length}</div><div style="font-size:12px;color:#888;">留言</div></div>
       </div>
       <div style="margin-top:16px;text-align:right;">
-        <button class="secondary" onclick="closeModal()">关闭</button>
+        <button class="secondary" onclick="adm_closeModal()">关闭</button>
       </div>
     `;
     this.showModal(html);
@@ -6647,18 +7718,56 @@ const App = {
   openAdmin() {
     const cur = Auth.current();
     if (!cur || cur.role !== 'admin') { toast('需要管理员权限', 'error'); return; }
-    /* 阶段 2 才会真有 admin.html，这里先做占位提示 */
-    if (typeof window.openAdminPanel === 'function') {
-      window.openAdminPanel();
-    } else {
-      toast('管理后台将在阶段 2 上线', 'info');
-    }
+    /* 切换到后台面板（已合并到主文件） */
+    App.switchPanel('adminPanel', document.querySelector('#mainNav button[data-panel="adminPanel"]'));
+    /* 标记 admin 面板激活：用于 CSS 隐藏水印/页脚/雨效果 */
+    document.body.classList.add('admin-open');
+    /* 同步激活 adm-app（admin IIFE 在页面解析时启动，那时 adminSession 可能未就绪） */
+    try {
+      const loginWrap = document.getElementById('adm-loginWrap');
+      const admApp = document.getElementById('adm-app');
+      if (admApp && loginWrap) {
+        /* 同步 adminSession（如果还没有） */
+        if (!localStorage.getItem('adminSession')) {
+          localStorage.setItem('adminSession', JSON.stringify({
+            id: cur.id, username: cur.username, loginAt: Date.now()
+          }));
+        }
+        /* 显示后台、隐藏登录页 */
+        admApp.classList.add('adm-active');
+        loginWrap.style.display = 'none';
+        /* 触发默认页：仪表盘 */
+        if (typeof window.adm_switchPage === 'function') window.adm_switchPage('dashboard');
+        else if (typeof window.adm_refreshAll === 'function') window.adm_refreshAll();
+      }
+    } catch (e) { console.warn('激活后台失败', e); }
+  },
+  closeAdmin() {
+    /* 退出后台：移除 admin-open 标记，恢复水印/页脚/雨效果 */
+    document.body.classList.remove('admin-open');
+    App.switchPanel('homePanel', document.querySelector('#mainNav button[data-panel="homePanel"]'));
   },
   switchPanel(panel, btn) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     $(panel).classList.add('active');
     document.querySelectorAll('#mainNav button').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
+    /* 切面板时自动重新显示投票弹窗（如果之前被关闭） */
+    try {
+      const fab = $('voteFab');
+      if (fab && fab.style.display === 'none') {
+        fab.style.display = '';
+        /* 如果没有显式 voteMin 标志，恢复为展开状态 */
+        let min;
+        try { min = localStorage.getItem('voteMin'); } catch (e) {}
+        if (min !== '1') fab.classList.remove('vote-min');
+        const btnMin = $('voteBtnMin');
+        if (btnMin) {
+          btnMin.textContent = fab.classList.contains('vote-min') ? '＋' : '－';
+          btnMin.title = fab.classList.contains('vote-min') ? '展开' : '最小化';
+        }
+      }
+    } catch (e) {}
     if (panel === 'treePanel' && App.tree) {
       /* 恢复 _loop（之前 panel 隐藏时被暂停） */
       App.tree._startLoop();
@@ -7103,7 +8212,7 @@ const App = {
         <textarea id="replyContent" maxlength="200" placeholder="说点鼓励的话..."></textarea>
       </div>
       <div class="modal-actions">
-        <button class="secondary" onclick="closeModal()">取消</button>
+        <button class="secondary" onclick="adm_closeModal()">取消</button>
         <button id="btnSendReply">发送</button>
       </div>
     `);
@@ -7175,7 +8284,7 @@ const App = {
         }).join('')
       }
       <div class="modal-actions">
-        <button class="secondary" onclick="closeModal()">关闭</button>
+        <button class="secondary" onclick="adm_closeModal()">关闭</button>
         <button onclick="App.replyStoryDialog('${id}');">💬 留言</button>
       </div>
     `);
@@ -7651,7 +8760,7 @@ const App = {
         <textarea id="newPostContent" maxlength="1000" placeholder="详细说说..."></textarea>
       </div>
       <div class="modal-actions">
-        <button class="secondary" onclick="closeModal()">取消</button>
+        <button class="secondary" onclick="adm_closeModal()">取消</button>
         <button id="btnSubmitNewPost">发布</button>
       </div>
     `);
@@ -8111,6 +9220,111 @@ const App = {
     });
   },
   /* 初始化 FAB + 面板 + TTS 全局行为 */
+  _initWatermark() {
+    /* 默认开启；可通过以下方式关闭：
+       localStorage.setItem('watermark', 'false')  ← 永久关闭
+       或  body[data-watermark="off"]              ← 当前会话关闭
+       也可调用 App.setWatermark(true|false) 运行时切换
+       水印 pointer-events: none，不影响任何操作 */
+    const host = $('betaWatermark');
+    if (!host) return;
+    /* 同步设置 body[data-watermark] */
+    const on = App._isWatermarkOn();
+    if (!on) document.body.setAttribute('data-watermark', 'off');
+    else document.body.removeAttribute('data-watermark');
+    /* 生成水印网格（铺满视口，每个 cell 一个旋转文本） */
+    const text = 'Beta2测试版非正式版-由用户linden_thomas_lin开发';
+    const cellW = 560;   // 每个 cell 水平间距（字大后拉宽）
+    const cellH = 260;   // 每个 cell 垂直间距（字大后拉高）
+    const cols = Math.ceil(window.innerWidth / cellW) + 2;
+    const rows = Math.ceil(window.innerHeight / cellH) + 2;
+    const frag = document.createDocumentFragment();
+    for (let r = -1; r < rows; r++) {
+      for (let c = -1; c < cols; c++) {
+        const sp = document.createElement('span');
+        sp.className = 'wm-cell';
+        sp.textContent = text;
+        sp.style.left = (c * cellW + (r % 2 ? cellW / 2 : 0)) + 'px';
+        sp.style.top = (r * cellH) + 'px';
+        sp.style.width = cellW + 'px';
+        sp.style.textAlign = 'center';
+        frag.appendChild(sp);
+      }
+    }
+    host.replaceChildren(frag);
+    /* 窗口缩放时重排 */
+    if (!App._wmResizeBound) {
+      App._wmResizeBound = true;
+      let rT;
+      window.addEventListener('resize', () => {
+        clearTimeout(rT);
+        rT = setTimeout(() => App._initWatermark(), 200);
+      });
+    }
+  },
+  _isWatermarkOn() {
+    /* 检查 localStorage 开关；缺省/true 都视为开启 */
+    try {
+      const v = localStorage.getItem('watermark');
+      if (v === 'false' || v === 'off' || v === '0') return false;
+    } catch (e) {}
+    return true;
+  },
+  setWatermark(on) {
+    /* 运行时切换水印开关 */
+    try {
+      localStorage.setItem('watermark', on ? 'true' : 'false');
+    } catch (e) {}
+    App._initWatermark();
+    toast(on ? '水印已开启' : '水印已关闭', 'success');
+  },
+  _initVoteFab() {
+    /* Trae 社区投票悬浮弹窗
+       关闭：仅 hide 弹窗（不写 localStorage）→ 刷新/切面板会自动重新显示
+       最小化：localStorage.voteMin = '1'     ← 最小化状态持久化（保留） */
+    const fab = $('voteFab');
+    if (!fab) return;
+    /* 总是显示弹窗（关闭后刷新即重新出现） */
+    fab.style.display = '';
+    document.body.removeAttribute('data-vote');
+    /* 应用最小化状态（最小化仍然持久化） */
+    let min;
+    try { min = localStorage.getItem('voteMin'); } catch (e) {}
+    if (min === '1') fab.classList.add('vote-min');
+    else fab.classList.remove('vote-min');
+    /* 绑定按钮 */
+    const btnMin = $('voteBtnMin');
+    const btnClose = $('voteBtnClose');
+    if (btnMin) {
+      btnMin.addEventListener('click', () => {
+        const isMin = fab.classList.toggle('vote-min');
+        try { localStorage.setItem('voteMin', isMin ? '1' : '0'); } catch (e) {}
+        btnMin.textContent = isMin ? '＋' : '－';
+        btnMin.title = isMin ? '展开' : '最小化';
+      });
+      /* 同步按钮初始文字 */
+      btnMin.textContent = fab.classList.contains('vote-min') ? '＋' : '－';
+      btnMin.title = fab.classList.contains('vote-min') ? '展开' : '最小化';
+    }
+    if (btnClose) {
+      btnClose.addEventListener('click', () => {
+        /* 关闭 = 仅 hide 当前弹窗，不写 storage
+           下次刷新/切页面 _initVoteFab 重新执行，弹窗会重新显示 */
+        fab.style.display = 'none';
+      });
+    }
+  },
+  showVoteFab() {
+    /* 手动重新显示弹窗（供调试或重置使用） */
+    const fab = $('voteFab');
+    if (!fab) return;
+    fab.style.display = '';
+    fab.classList.remove('vote-min');
+    document.body.removeAttribute('data-vote');
+    const btnMin = $('voteBtnMin');
+    if (btnMin) { btnMin.textContent = '－'; btnMin.title = '最小化'; }
+    try { localStorage.removeItem('voteMin'); } catch (e) {}
+  },
   _initA11yFab() {
     const fab = $('a11yFab');
     const panel = $('a11yPanel');
@@ -8596,9 +9810,191 @@ console.log('[MediaPipe] inlined: Hands & Camera ready');
   }
 
   /* ============================================================
+     4.5 上传图片（base64 + localStorage）
+  ============================================================ */
+  let _uploadTarget = -1;
+  function openFileForUpload(idx) {
+    _uploadTarget = idx;
+    const input = document.getElementById('smileFileInput');
+    if (input) { input.value = ''; input.click(); }
+  }
+  document.getElementById('smileFileInput').addEventListener('change', e => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (file.size > 4 * 1024 * 1024) {
+      try { if (typeof toast === 'function') toast('图片过大，请选择小于 4MB 的图片', 'warn'); } catch (err) {}
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const dataUrl = ev.target.result;
+      /* 压缩到 1024px 以内（保持清晰度的同时节省空间） */
+      const img = new Image();
+      img.onload = () => {
+        let out = dataUrl;
+        try {
+          const maxSide = 1024;
+          let w = img.width, h = img.height;
+          if (w > maxSide || h > maxSide) {
+            if (w > h) { h = Math.round(h * maxSide / w); w = maxSide; }
+            else { w = Math.round(w * maxSide / h); h = maxSide; }
+            const c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            c.getContext('2d').drawImage(img, 0, 0, w, h);
+            out = c.toDataURL('image/jpeg', 0.85);
+          }
+        } catch (err) { /* 跨域图压缩失败时保留原 dataURL */ }
+        if (_uploadTarget >= 0) {
+          customImages[_uploadTarget] = out;
+          saveCustomImages();
+          renderThumbs();
+          showAt(_uploadTarget, true);
+          try { if (typeof toast === 'function') toast('已上传图片'); } catch (err) {}
+        }
+        _uploadTarget = -1;
+      };
+      img.onerror = () => {
+        try { if (typeof toast === 'function') toast('图片解析失败', 'warn'); } catch (err) {}
+        _uploadTarget = -1;
+      };
+      img.src = dataUrl;
+    };
+    reader.onerror = () => {
+      try { if (typeof toast === 'function') toast('文件读取失败', 'warn'); } catch (err) {}
+    };
+    reader.readAsDataURL(file);
+  });
+
+  /* ============================================================
+     4.6 添加职业模态框
+  ============================================================ */
+  let _modalTarget = -1;
+  let _modalPosition = 'after';   /* 'before' | 'after' */
+  let _modalSelectedColor = 'rgba(255, 138, 101, 0.4)';
+
+  function openModal(idx, position) {
+    _modalTarget = (idx == null) ? -1 : idx;
+    _modalPosition = position || 'after';
+    const modal = document.getElementById('smileModal');
+    const title = modal.querySelector('.smile-modal-title');
+    /* 标题：插入位置 */
+    if (idx == null) {
+      if (title) title.textContent = '➕ 添加新职业（末尾）';
+    } else {
+      if (title) title.textContent = (position === 'before' ? '⬆️ 前面加' : '⬇️ 后面加') + '职业（位置 ' + (idx + 1) + '）';
+    }
+    /* 清空输入 */
+    const eIn = document.getElementById('smileModalEmoji');
+    const nIn = document.getElementById('smileModalName');
+    const rIn = document.getElementById('smileModalRole');
+    const qIn = document.getElementById('smileModalQuote');
+    if (eIn) eIn.value = '🧑‍🔧';
+    if (nIn) nIn.value = '';
+    if (rIn) rIn.value = '';
+    if (qIn) qIn.value = '';
+    /* 选中第一个表情预设 */
+    const epBtns = modal.querySelectorAll('#smileModalEmojiPresets button');
+    epBtns.forEach((b, i) => b.classList.toggle('active', i === 6));
+    /* 选中第一个颜色 */
+    const cBtns = modal.querySelectorAll('#smileModalColors button');
+    cBtns.forEach((b, i) => b.classList.toggle('active', i === 0));
+    _modalSelectedColor = (cBtns[0] && cBtns[0].dataset.c) || 'rgba(255, 138, 101, 0.4)';
+    if (modal) modal.classList.remove('hide');
+    /* 自动聚焦到 name 输入 */
+    setTimeout(() => { if (nIn) nIn.focus(); }, 50);
+  }
+  function closeModal() {
+    const modal = document.getElementById('smileModal');
+    if (modal) modal.classList.add('hide');
+  }
+
+  /* 表情预设点击 */
+  document.getElementById('smileModalEmojiPresets').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-e]');
+    if (!btn) return;
+    const ep = document.getElementById('smileModalEmoji');
+    const presets = document.getElementById('smileModalEmojiPresets');
+    if (ep) ep.value = btn.dataset.e;
+    presets.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+  });
+  /* 颜色预设点击 */
+  document.getElementById('smileModalColors').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-c]');
+    if (!btn) return;
+    const presets = document.getElementById('smileModalColors');
+    presets.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+    _modalSelectedColor = btn.dataset.c;
+  });
+  /* emoji 输入框同步 active */
+  document.getElementById('smileModalEmoji').addEventListener('input', e => {
+    const v = e.target.value;
+    const presets = document.getElementById('smileModalEmojiPresets');
+    presets.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.e === v));
+  });
+
+  document.getElementById('smileModalClose').addEventListener('click', closeModal);
+  document.getElementById('smileModalCancel').addEventListener('click', closeModal);
+  /* 遮罩点击关闭 */
+  document.querySelector('#smileModal .smile-modal-mask').addEventListener('click', closeModal);
+  /* ESC 关闭 */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('smileModal');
+      if (modal && !modal.classList.contains('hide')) closeModal();
+    }
+  });
+
+  /* 保存新职业 */
+  document.getElementById('smileModalSave').addEventListener('click', () => {
+    const emoji = (document.getElementById('smileModalEmoji').value || '🧑').trim() || '🧑';
+    const name = (document.getElementById('smileModalName').value || '').trim();
+    const role = (document.getElementById('smileModalRole').value || '').trim();
+    const quote = (document.getElementById('smileModalQuote').value || '').trim();
+    if (!name) { try { if (typeof toast === 'function') toast('请填写「名字」', 'warn'); } catch (e) {} return; }
+    if (!role) { try { if (typeof toast === 'function') toast('请填写「职业」', 'warn'); } catch (e) {} return; }
+    const item = { emoji, name, role, quote: quote || '为社会贡献自己的光和热。', glow: _modalSelectedColor };
+    let insertAt; /* 在 SMILES 中的位置 */
+    if (_modalTarget < 0) {
+      customSmiles.push(item);
+      insertAt = SMILES.length; /* 末尾追加 */
+    } else if (_modalPosition === 'before') {
+      const ci = _modalTarget - DEFAULT_SMILES.length;
+      const idx = Math.max(0, ci);
+      customSmiles.splice(idx, 0, item);
+      insertAt = _modalTarget; /* 前插：原 _modalTarget 位置变成新项的 _modalTarget + 1 */
+    } else {
+      const ci = _modalTarget - DEFAULT_SMILES.length + 1;
+      customSmiles.splice(ci, 0, item);
+      insertAt = _modalTarget + 1;
+    }
+    saveCustomSmiles();
+    /* 重新整理 customImages 索引（如果在前面插入） */
+    if (_modalTarget >= 0 && _modalPosition === 'before') {
+      const newImages = {};
+      Object.keys(customImages).forEach(k => {
+        const ki = parseInt(k);
+        if (ki < _modalTarget) newImages[ki] = customImages[ki];
+        else newImages[ki + 1] = customImages[ki];
+      });
+      customImages = newImages;
+      saveCustomImages();
+    } else if (_modalTarget < 0) {
+      /* 末尾追加：customImages 的 key 不变 */
+    }
+    rebuildSmiles();
+    state.currentIdx = insertAt;
+    renderThumbs();
+    showAt(state.currentIdx, true);
+    updateFavList();
+    closeModal();
+    try { if (typeof toast === 'function') toast('已添加「' + name + '」'); } catch (e) {}
+  });
+
+  /* ============================================================
      4. 切换主卡
   ============================================================ */
   function showAt(i, animated) {
+    if (SMILES.length === 0) return;
     if (i < 0) i = SMILES.length - 1;
     if (i >= SMILES.length) i = 0;
     state.currentIdx = i;
@@ -8613,7 +10009,18 @@ console.log('[MediaPipe] inlined: Hands & Camera ready');
     const fav = document.getElementById('smileHeroFav');
     const glow = card ? card.querySelector('.smile-hero-glow') : null;
 
-    if (emoji) emoji.textContent = s.emoji;
+    /* 主图：优先显示用户上传的图片，否则显示 emoji */
+    if (emoji) {
+      if (customImages[i]) {
+        emoji.style.backgroundImage = 'url("' + customImages[i] + '")';
+        emoji.classList.add('has-image');
+        emoji.textContent = '';
+      } else {
+        emoji.style.backgroundImage = '';
+        emoji.classList.remove('has-image');
+        emoji.textContent = s.emoji;
+      }
+    }
     if (name) name.textContent = s.name;
     if (role) role.textContent = s.role;
     if (quote) quote.textContent = '"' + s.quote + '"';
@@ -8994,6 +10401,12 @@ console.log('[MediaPipe] inlined: Hands & Camera ready');
   }
 
   function onGesture(g) {
+    /* 用户主动暂停时：保留当前照片不变 */
+    if (state.gesturePaused) {
+      const valEl = document.getElementById('smileGaugeValue');
+      if (valEl) valEl.textContent = '⏸ 已暂停 · 保持当前照片';
+      return;
+    }
     const now = performance.now();
     /* 节流：同一手势 800ms 内只触发一次 */
     if (state.lastGesture === g && now - state.lastGestureTime < 800) return;
@@ -9012,6 +10425,32 @@ console.log('[MediaPipe] inlined: Hands & Camera ready');
       default: break;
     }
   }
+
+  /* ============================================================
+     9.5 暂停手势（保留当前照片）
+  ============================================================ */
+  function toggleGesturePause() {
+    state.gesturePaused = !state.gesturePaused;
+    const btn = document.getElementById('smileBtnPause');
+    if (btn) {
+      if (state.gesturePaused) {
+        btn.classList.add('paused');
+        btn.textContent = '▶ 继续手势';
+      } else {
+        btn.classList.remove('paused');
+        btn.textContent = '⏸ 暂停手势';
+      }
+    }
+    const valEl = document.getElementById('smileGaugeValue');
+    if (state.gesturePaused) {
+      if (valEl) valEl.textContent = '⏸ 已暂停 · 保持当前照片';
+      try { if (typeof toast === 'function') toast('已暂停手势 · 当前照片保持不变'); } catch (e) {}
+    } else {
+      if (valEl) valEl.textContent = '手势已恢复';
+      try { if (typeof toast === 'function') toast('手势已恢复'); } catch (e) {}
+    }
+  }
+  document.getElementById('smileBtnPause').addEventListener('click', toggleGesturePause);
 
   async function startCamera() {
     if (state.gestureEnabled) return;
@@ -9211,5 +10650,994 @@ console.log('[MediaPipe] inlined: Hands & Camera ready');
   updateFavList();
 })();
 </script>
+
+<script>
+/* ============================================================
+   光影巨树 · 管理后台（合并到主文件）
+   ============================================================ */
+(function() {
+  'use strict';
+
+/* ============================================================
+   光影巨树 · 管理后台
+   纯前端、零依赖、共享 index.html 的 localStorage
+   ============================================================ */
+'use strict';
+
+/* ============= 存储模块（与 index.html 一致） ============= */
+const KEYS = {
+  users: 'users',
+  currentUser: 'currentUser',
+  adminSession: 'adminSession',
+  stories: 'stories',
+  replies: 'replies',
+  posts: 'posts',
+  comments: 'comments',
+  aiReviewLog: 'aiReviewLog',
+  siteConfig: 'siteConfig',
+  aiKB: 'aiKB',
+  archive: 'archive',
+  settings: 'userSettings',
+  aiLog: 'aiLog',
+  uiState: 'uiState',
+  systemConfig: 'systemConfig',
+};
+const Store = {
+  get(k, d) {
+    try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); }
+    catch (e) { return d; }
+  },
+  set(k, v) {
+    try { localStorage.setItem(k, JSON.stringify(v)); }
+    catch (e) { console.error('localStorage 写入失败', k, e); }
+  },
+  /* 与 index.html 一致的简单 hash */
+  hash(s) {
+    let h = 0;
+    for (let i = 0; i < s.length; i++) {
+      h = (h << 5) - h + s.charCodeAt(i);
+      h |= 0;
+    }
+    return (h >>> 0).toString(16);
+  }
+};
+
+/* 默认管理员兜底（与 index.html 一致） */
+(function initAdmin() {
+  const users = Store.get(KEYS.users, []);
+  if (!users.find(u => u.username === 'admin')) {
+    users.unshift({
+      id: 'admin-001',
+      username: 'admin',
+      passwordHash: Store.hash('admin123'),
+      role: 'admin',
+      profession: '其他',
+      ageGroup: '26-35',
+      createdAt: Date.now(),
+      status: 'active',
+      avatar: ''
+    });
+    Store.set(KEYS.users, users);
+  }
+  /* 默认 siteConfig */
+  if (!Store.get(KEYS.siteConfig)) {
+    Store.set(KEYS.siteConfig, {
+      banner: '光影巨树 · 基层务工群体互助平台',
+      welcome: '愿这棵树，承载你的每一次倾诉',
+      footer: '本站为前端作品，数据仅保存在本机浏览器',
+      icp: '',
+      police: '',
+      logo: '',
+      background: ''
+    });
+  }
+  /* 默认 systemConfig */
+  if (!Store.get(KEYS.systemConfig)) {
+    Store.set(KEYS.systemConfig, {
+      allowRegister: true,
+      allowPost: true,
+      enableAI: true,
+      enableAudit: true
+    });
+  }
+})();
+
+/* ============= 工具 ============= */
+function $(id) { return document.getElementById(id); }
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function fmtTime(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  const p = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function fmtDateShort(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  const p = n => String(n).padStart(2, '0');
+  return `${d.getMonth()+1}/${d.getDate()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function toast(msg, type) {
+  const host = $('adm-toastHost');
+  const t = document.createElement('div');
+  t.className = 'toast ' + (type || '');
+  t.textContent = msg;
+  host.appendChild(t);
+  setTimeout(() => {
+    t.style.opacity = '0';
+    t.style.transition = 'opacity 0.3s';
+    setTimeout(() => t.remove(), 300);
+  }, 2400);
+}
+function confirmDialog(title, message, onYes) {
+  $('adm-modalContent').innerHTML = `
+    <div class="modal-title">${escapeHtml(title)}<button class="modal-close" onclick="adm_closeModal()">×</button></div>
+    <div style="color:#c0c0d0; margin-bottom: 18px; line-height: 1.6;">${message}</div>
+    <div class="modal-footer">
+      <button class="btn" onclick="adm_closeModal()">取消</button>
+      <button class="btn btn-danger" id="modalConfirmYes">确认</button>
+    </div>`;
+  $('adm-modalMask').classList.add('adm-active');
+  $('adm-modalConfirmYes').addEventListener('click', () => { closeModal(); onYes(); });
+}
+function closeModal() { $('adm-modalMask').classList.remove('adm-active'); }
+window.adm_closeModal = closeModal;
+/* 暴露关键函数到 window（供主站 App.openAdmin 调用） */
+window.adm_switchPage = switchPage;
+window.adm_refreshAll = refreshAll;
+window.adm_refreshDashboard = refreshDashboard;
+window.adm_refreshUsers = refreshUsers;
+window.adm_refreshAudit = refreshAudit;
+
+/* ============= 登录 ============= */
+$('adm-loginForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const u = $('adm-loginUser').value.trim();
+  const p = $('adm-loginPwd').value;
+  const users = Store.get(KEYS.users, []);
+  const admin = users.find(x => x.username === u && x.role === 'admin');
+  if (!admin) { toast('管理员账号不存在', 'error'); return; }
+  if (admin.passwordHash !== Store.hash(p)) { toast('密码错误', 'error'); return; }
+  if (admin.status === 'banned') { toast('此账号已被封禁', 'error'); return; }
+  /* 写入会话 */
+  Store.set(KEYS.adminSession, { id: admin.id, username: admin.username, loginAt: Date.now() });
+  $('adm-topbarAdmin').textContent = admin.username;
+  $('adm-loginWrap').style.display = 'none';
+  $('adm-app').classList.add('adm-active');
+  toast('欢迎回来，' + admin.username, 'success');
+  /* 初次进入默认页 */
+  switchPage('dashboard');
+  refreshAll();
+});
+
+$('adm-btnLogout').addEventListener('click', () => {
+  if (!confirm('确定退出管理后台？')) return;
+  localStorage.removeItem(KEYS.adminSession);
+  $('adm-app').classList.remove('adm-active');
+  $('adm-loginWrap').style.display = 'flex';
+  $('adm-loginUser').value = '';
+  $('adm-loginPwd').value = '';
+  /* 同步移除 admin-open 标记，恢复水印/页脚/雨效果 */
+  try { document.body.classList.remove('admin-open'); } catch (e) {}
+});
+
+/* 自动登录（保持会话） */
+(function tryAutoLogin() {
+  const s = Store.get(KEYS.adminSession);
+  if (!s) return;
+  const users = Store.get(KEYS.users, []);
+  const admin = users.find(x => x.id === s.id && x.role === 'admin');
+  if (!admin) { localStorage.removeItem(KEYS.adminSession); return; }
+  if (admin.status === 'banned') { localStorage.removeItem(KEYS.adminSession); return; }
+  $('adm-topbarAdmin').textContent = admin.username;
+  $('adm-loginWrap').style.display = 'none';
+  $('adm-app').classList.add('adm-active');
+  switchPage('dashboard');
+  refreshAll();
+})();
+
+/* ============= 路由 ============= */
+function switchPage(name) {
+  document.querySelectorAll('.adm-page').forEach(p => p.classList.remove('adm-active'));
+  document.querySelectorAll('.adm-nav-item').forEach(n => n.classList.remove('adm-active'));
+  const page = $('adm-page-' + name);
+  if (page) page.classList.add('adm-active');
+  document.querySelector(`.adm-nav-item[data-page="${name}"]`)?.classList.add('adm-active');
+  /* 触发对应页刷新 */
+  if (name === 'dashboard') refreshDashboard();
+  else if (name === 'users') refreshUsers();
+  else if (name === 'content') loadContent();
+  else if (name === 'media') refreshMedia();
+  else if (name === 'record') loadRecord();
+  else if (name === 'audit') refreshAudit();
+  else if (name === 'settings') loadSettings();
+}
+document.querySelectorAll('.adm-nav-item').forEach(item => {
+  item.addEventListener('click', () => switchPage(item.dataset.page));
+});
+
+/* 弹窗点击遮罩关闭 */
+$('adm-modalMask').addEventListener('click', e => {
+  if (e.target === $('adm-modalMask')) closeModal();
+});
+
+/* ============= 仪表盘 ============= */
+function refreshDashboard() {
+  const users = Store.get(KEYS.users, []);
+  const stories = Store.get(KEYS.stories, []);
+  const posts = Store.get(KEYS.posts, []);
+  const comments = Store.get(KEYS.comments, []);
+
+  $('adm-statUsers').textContent = users.length;
+  $('adm-statStories').textContent = stories.length;
+  $('adm-statPosts').textContent = posts.length;
+  /* 今日新增 */
+  const startOfDay = new Date(); startOfDay.setHours(0, 0, 0, 0);
+  const todayTs = startOfDay.getTime();
+  const todayCount =
+    stories.filter(s => (s.createdAt || 0) >= todayTs).length +
+    posts.filter(p => (p.createdAt || 0) >= todayTs).length;
+  $('adm-statToday').textContent = todayCount;
+
+  /* 趋势文字（最近 7 日新增用户/故事） */
+  const sevenDayAgo = Date.now() - 7 * 86400000;
+  const newUsers = users.filter(u => (u.createdAt || 0) >= sevenDayAgo).length;
+  const newStories = stories.filter(s => (s.createdAt || 0) >= sevenDayAgo).length;
+  const newPosts = posts.filter(p => (p.createdAt || 0) >= sevenDayAgo).length;
+  $('adm-statUsersTrend').textContent = `+${newUsers} 7日 · ${comments.length} 评论`;
+  $('adm-statStoriesTrend').textContent = `+${newStories} 7日`;
+  $('adm-statPostsTrend').textContent = `+${newPosts} 7日`;
+
+  /* 情绪饼图 */
+  drawEmotionPie(stories);
+  /* 职业柱状图 */
+  drawProfessionBars(users);
+  /* 7 日活跃折线 */
+  drawTrendLine(stories, posts);
+}
+$('adm-btnRefreshDash').addEventListener('click', refreshDashboard);
+
+/* 颜色映射 */
+const EMOTION_COLORS = {
+  happy:   '#ffb74d',
+  anxious: '#5dc4ff',
+  tired:   '#b39ddb',
+  angry:   '#ef5350',
+  sad:     '#90a4ae',
+  calm:    '#81c784',
+  unknown: '#666'
+};
+const EMOTION_LABEL = {
+  happy: '开心', anxious: '焦虑', tired: '疲惫',
+  angry: '愤怒', sad: '悲伤', calm: '平静', unknown: '未识别'
+};
+
+function drawEmotionPie(stories) {
+  const canvas = $('adm-chartEmotion');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+  ctx.clearRect(0, 0, W, H);
+
+  /* 统计 */
+  const cnt = {};
+  stories.forEach(s => {
+    const e = (s.emotion || s.aiEmotion || 'unknown');
+    cnt[e] = (cnt[e] || 0) + 1;
+  });
+  const total = stories.length;
+  const entries = Object.entries(cnt).sort((a, b) => b[1] - a[1]);
+
+  /* 中心圆 */
+  const cx = W / 2, cy = H / 2, r = Math.min(W, H) * 0.35;
+  if (total === 0) {
+    ctx.fillStyle = '#666';
+    ctx.font = '14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('暂无倾诉数据', cx, cy);
+    $('adm-legendEmotion').innerHTML = '';
+    return;
+  }
+
+  let startAngle = -Math.PI / 2;
+  entries.forEach(([e, n]) => {
+    const angle = (n / total) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, startAngle + angle);
+    ctx.closePath();
+    ctx.fillStyle = EMOTION_COLORS[e] || EMOTION_COLORS.unknown;
+    ctx.fill();
+    /* 描边 */
+    ctx.strokeStyle = 'rgba(10, 14, 26, 0.8)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    startAngle += angle;
+  });
+  /* 中心圆白心 */
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.55, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(20, 25, 40, 0.95)';
+  ctx.fill();
+  ctx.fillStyle = '#f0f0f5';
+  ctx.font = '600 20px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(total, cx, cy - 2);
+  ctx.font = '11px sans-serif';
+  ctx.fillStyle = '#888';
+  ctx.fillText('颗果实', cx, cy + 14);
+
+  /* 图例 */
+  $('adm-legendEmotion').innerHTML = entries.map(([e, n]) => {
+    const pct = ((n / total) * 100).toFixed(1);
+    return `<div class="chart-legend-item">
+      <span class="chart-legend-dot" style="background:${EMOTION_COLORS[e] || EMOTION_COLORS.unknown}"></span>
+      <span>${EMOTION_LABEL[e] || e} · ${n} (${pct}%)</span>
+    </div>`;
+  }).join('');
+}
+
+function drawProfessionBars(users) {
+  const canvas = $('adm-chartProfession');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+  ctx.clearRect(0, 0, W, H);
+
+  /* 统计（不包含管理员） */
+  const cnt = {};
+  users.filter(u => u.role !== 'admin').forEach(u => {
+    const p = u.profession || '其他';
+    cnt[p] = (cnt[p] || 0) + 1;
+  });
+  const entries = Object.entries(cnt).sort((a, b) => b[1] - a[1]);
+  if (entries.length === 0) {
+    ctx.fillStyle = '#666';
+    ctx.font = '14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('暂无用户职业数据', W / 2, H / 2);
+    return;
+  }
+  const max = Math.max(...entries.map(e => e[1]));
+
+  const padL = 80, padR = 20, padT = 20, padB = 20;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+  const rowH = innerH / entries.length;
+  const barH = Math.min(28, rowH * 0.6);
+
+  /* Y 轴 */
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(padL, padT);
+  ctx.lineTo(padL, H - padB);
+  ctx.stroke();
+
+  /* 渐变色 */
+  const barColor = ['#ff8a65', '#5dc4ff', '#aed581', '#ffb74d', '#b39ddb', '#ef5350', '#90a4ae', '#81c784', '#f06292'];
+
+  entries.forEach(([p, n], i) => {
+    const y = padT + i * rowH + (rowH - barH) / 2;
+    const w = (n / max) * innerW;
+    /* 标签 */
+    ctx.fillStyle = '#b0b0c0';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(p, padL - 8, y + barH / 2);
+    /* 柱子 */
+    const grd = ctx.createLinearGradient(padL, 0, padL + w, 0);
+    const c = barColor[i % barColor.length];
+    grd.addColorStop(0, c + 'cc');
+    grd.addColorStop(1, c + '55');
+    ctx.fillStyle = grd;
+    ctx.beginPath();
+    /* 圆角矩形 */
+    const radius = 4;
+    ctx.moveTo(padL + radius, y);
+    ctx.lineTo(padL + w - radius, y);
+    ctx.quadraticCurveTo(padL + w, y, padL + w, y + radius);
+    ctx.lineTo(padL + w, y + barH - radius);
+    ctx.quadraticCurveTo(padL + w, y + barH, padL + w - radius, y + barH);
+    ctx.lineTo(padL + radius, y + barH);
+    ctx.quadraticCurveTo(padL, y + barH, padL, y + barH - radius);
+    ctx.lineTo(padL, y + radius);
+    ctx.quadraticCurveTo(padL, y, padL + radius, y);
+    ctx.closePath();
+    ctx.fill();
+    /* 数值 */
+    ctx.fillStyle = '#f0f0f5';
+    ctx.font = '600 12px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(n, padL + w + 6, y + barH / 2);
+  });
+}
+
+function drawTrendLine(stories, posts) {
+  const canvas = $('adm-chartTrend');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+  ctx.clearRect(0, 0, W, H);
+
+  /* 计算 7 天 */
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - i);
+    days.push({
+      label: `${d.getMonth()+1}/${d.getDate()}`,
+      start: d.getTime(),
+      end: d.getTime() + 86400000
+    });
+  }
+  const storyData = days.map(d => stories.filter(s => {
+    const t = s.createdAt || 0; return t >= d.start && t < d.end;
+  }).length);
+  const postData = days.map(d => posts.filter(p => {
+    const t = p.createdAt || 0; return t >= d.start && t < d.end;
+  }).length);
+
+  const padL = 36, padR = 20, padT = 16, padB = 30;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+  const max = Math.max(1, ...storyData, ...postData);
+
+  /* 网格 */
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = padT + (innerH * i / 4);
+    ctx.beginPath();
+    ctx.moveTo(padL, y);
+    ctx.lineTo(W - padR, y);
+    ctx.stroke();
+    ctx.fillStyle = '#666';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(Math.round(max * (1 - i / 4)), padL - 6, y);
+  }
+  /* X 轴 */
+  ctx.fillStyle = '#888';
+  ctx.font = '10px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  days.forEach((d, i) => {
+    const x = padL + (innerW * i / 6);
+    ctx.fillText(d.label, x, H - padB + 6);
+  });
+
+  /* 折线 - 故事 */
+  function drawLine(data, color) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    data.forEach((n, i) => {
+      const x = padL + (innerW * i / 6);
+      const y = padT + innerH * (1 - n / max);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    /* 点 */
+    ctx.fillStyle = color;
+    data.forEach((n, i) => {
+      const x = padL + (innerW * i / 6);
+      const y = padT + innerH * (1 - n / max);
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+  drawLine(storyData, '#5dc4ff');
+  drawLine(postData, '#ff8a65');
+
+  /* 图例 */
+  ctx.font = '11px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#5dc4ff';
+  ctx.fillRect(W - 150, padT + 2, 10, 2);
+  ctx.fillStyle = '#b0b0c0';
+  ctx.fillText('故事', W - 134, padT + 3);
+  ctx.fillStyle = '#ff8a65';
+  ctx.fillRect(W - 90, padT + 2, 10, 2);
+  ctx.fillStyle = '#b0b0c0';
+  ctx.fillText('帖子', W - 74, padT + 3);
+}
+
+/* ============= 用户管理 ============= */
+function refreshUsers() {
+  const users = Store.get(KEYS.users, []);
+  const stories = Store.get(KEYS.stories, []);
+  const search = $('adm-userSearch').value.trim().toLowerCase();
+  const filter = $('adm-userFilter').value;
+  const tbody = $('adm-userTableBody');
+
+  /* 统计每用户倾诉数 */
+  const userStoryCnt = {};
+  stories.forEach(s => { userStoryCnt[s.userId] = (userStoryCnt[s.userId] || 0) + 1; });
+
+  const filtered = users.filter(u => {
+    if (filter === 'active' && u.status === 'banned') return false;
+    if (filter === 'banned' && u.status !== 'banned') return false;
+    if (search) {
+      const k = (u.username + ' ' + (u.profession || '')).toLowerCase();
+      if (!k.includes(search)) return false;
+    }
+    return true;
+  });
+
+  $('adm-badgeUsers').textContent = users.length;
+  $('adm-userTableInfo').textContent = `共 ${users.length} 名用户 · 当前显示 ${filtered.length} 名`;
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #666; padding: 30px;">暂无数据</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filtered.map(u => {
+    const isAdmin = u.role === 'admin';
+    const status = u.status === 'banned'
+      ? '<span class="pill pill-danger">已封禁</span>'
+      : (isAdmin ? '<span class="pill pill-info">管理员</span>' : '<span class="pill pill-success">正常</span>');
+    return `<tr>
+      <td><strong>${escapeHtml(u.username)}</strong>${isAdmin ? ' 🛡' : ''}</td>
+      <td>${escapeHtml(u.profession || '—')}</td>
+      <td>${escapeHtml(u.ageGroup || '—')}</td>
+      <td>${userStoryCnt[u.id] || 0}</td>
+      <td style="font-size:12px;color:#888;">${fmtDateShort(u.createdAt)}</td>
+      <td>${status}</td>
+      <td>
+        <div class="row-actions">
+          ${!isAdmin ? (u.status === 'banned'
+            ? `<button class="icon-btn" title="解封" onclick="toggleBan('${u.id}', false)">🔓</button>`
+            : `<button class="icon-btn danger" title="封禁" onclick="toggleBan('${u.id}', true)">🚫</button>`) : ''}
+          ${!isAdmin ? `<button class="icon-btn" title="重置密码" onclick="resetPwd('${u.id}')">🔑</button>` : ''}
+          <button class="icon-btn" title="查看详情" onclick="viewUser('${u.id}')">👁</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+window.adm_refreshUsersrefreshUsers;
+
+$('adm-userSearch').addEventListener('input', refreshUsers);
+$('adm-userFilter').addEventListener('change', refreshUsers);
+
+function toggleBan(uid, ban) {
+  const users = Store.get(KEYS.users, []);
+  const u = users.find(x => x.id === uid);
+  if (!u) return;
+  confirmDialog(ban ? '封禁用户' : '解封用户',
+    `确认要${ban ? '封禁' : '解封'}用户「${u.username}」？${ban ? '<br>封禁后该用户将无法登录' : ''}`,
+    () => {
+      u.status = ban ? 'banned' : 'active';
+      Store.set(KEYS.users, users);
+      refreshUsers();
+      toast(ban ? '已封禁' : '已解封', 'success');
+    });
+}
+window.adm_toggleBantoggleBan;
+
+function resetPwd(uid) {
+  const users = Store.get(KEYS.users, []);
+  const u = users.find(x => x.id === uid);
+  if (!u) return;
+  const newPwd = prompt(`重置「${u.username}」的密码为（直接输入新密码）：`, '123456');
+  if (!newPwd) return;
+  if (newPwd.length < 6) { toast('密码至少 6 位', 'error'); return; }
+  confirmDialog('确认重置密码',
+    `将「${u.username}」的密码重置为 <strong>${escapeHtml(newPwd)}</strong> ？`,
+    () => {
+      u.passwordHash = Store.hash(newPwd);
+      Store.set(KEYS.users, users);
+      toast('已重置密码', 'success');
+    });
+}
+window.adm_resetPwdresetPwd;
+
+function viewUser(uid) {
+  const users = Store.get(KEYS.users, []);
+  const stories = Store.get(KEYS.stories, []);
+  const posts = Store.get(KEYS.posts, []);
+  const u = users.find(x => x.id === uid);
+  if (!u) return;
+  const userStories = stories.filter(s => s.userId === uid);
+  const userPosts = posts.filter(p => p.userId === uid);
+  $('adm-modalContent').innerHTML = `
+    <div class="modal-title">👤 用户详情<button class="modal-close" onclick="adm_closeModal()">×</button></div>
+    <div style="line-height: 2;">
+      <div><strong>用户名：</strong>${escapeHtml(u.username)}</div>
+      <div><strong>角色：</strong>${u.role === 'admin' ? '管理员' : '普通用户'}</div>
+      <div><strong>职业：</strong>${escapeHtml(u.profession || '—')}</div>
+      <div><strong>年龄段：</strong>${escapeHtml(u.ageGroup || '—')}</div>
+      <div><strong>注册时间：</strong>${fmtTime(u.createdAt)}</div>
+      <div><strong>状态：</strong>${u.status === 'banned' ? '<span class="pill pill-danger">已封禁</span>' : '<span class="pill pill-success">正常</span>'}</div>
+      <div><strong>倾诉数：</strong>${userStories.length}</div>
+      <div><strong>发帖数：</strong>${userPosts.length}</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="adm_closeModal()">关闭</button>
+    </div>`;
+  $('adm-modalMask').classList.add('adm-active');
+}
+window.adm_viewUser = viewUser;
+
+$('adm-btnExportUsers').addEventListener('click', () => {
+  const users = Store.get(KEYS.users, []);
+  const data = users.map(u => {
+    const { passwordHash, ...rest } = u;
+    return rest;
+  });
+  downloadJSON(data, 'users-' + Date.now() + '.json');
+  toast('已导出 ' + data.length + ' 名用户', 'success');
+});
+
+/* ============= 内容管理 ============= */
+function loadContent() {
+  const cfg = Store.get(KEYS.siteConfig, {});
+  $('adm-cfgBanner').value = cfg.banner || '';
+  $('adm-cfgWelcome').value = cfg.welcome || '';
+  $('adm-cfgFooter').value = cfg.footer || '';
+}
+$('adm-btnSaveContent').addEventListener('click', () => {
+  const cfg = Store.get(KEYS.siteConfig, {});
+  cfg.banner = $('adm-cfgBanner').value.trim();
+  cfg.welcome = $('adm-cfgWelcome').value.trim();
+  cfg.footer = $('adm-cfgFooter').value.trim();
+  Store.set(KEYS.siteConfig, cfg);
+  toast('已保存', 'success');
+});
+
+/* ============= 素材管理 ============= */
+function refreshMedia() {
+  const cfg = Store.get(KEYS.siteConfig, {});
+  $('adm-logoPreview').style.backgroundImage = cfg.logo ? `url("${cfg.logo}")` : '';
+  $('adm-logoPreview').textContent = cfg.logo ? '' : '未设置';
+  $('adm-bgPreview').style.backgroundImage = cfg.background ? `url("${cfg.background}")` : '';
+  $('adm-bgPreview').textContent = cfg.background ? '' : '未设置';
+}
+
+function uploadImage(file, maxSizeKB, callback) {
+  if (!file) return;
+  if (file.size > maxSizeKB * 1024) {
+    toast(`图片超过 ${maxSizeKB}KB，请压缩后再试`, 'error');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const dataUrl = ev.target.result;
+    /* 压缩到 800px */
+    const img = new Image();
+    img.onload = () => {
+      let out = dataUrl;
+      try {
+        const maxSide = 800;
+        let w = img.width, h = img.height;
+        if (w > maxSide || h > maxSide) {
+          if (w > h) { h = Math.round(h * maxSide / w); w = maxSide; }
+          else { w = Math.round(w * maxSide / h); h = maxSide; }
+          const c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          c.getContext('2d').drawImage(img, 0, 0, w, h);
+          out = c.toDataURL('image/jpeg', 0.85);
+        }
+      } catch (e) {}
+      callback(out);
+    };
+    img.onerror = () => toast('图片解析失败', 'error');
+    img.src = dataUrl;
+  };
+  reader.readAsDataURL(file);
+}
+
+$('adm-btnUploadLogo').addEventListener('click', () => $('adm-fileLogo').click());
+$('adm-fileLogo').addEventListener('change', e => {
+  const file = e.target.files[0];
+  uploadImage(file, 500, dataUrl => {
+    const cfg = Store.get(KEYS.siteConfig, {});
+    cfg.logo = dataUrl;
+    Store.set(KEYS.siteConfig, cfg);
+    refreshMedia();
+    toast('Logo 已更新', 'success');
+    e.target.value = '';
+  });
+});
+$('adm-btnClearLogo').addEventListener('click', () => {
+  confirmDialog('清除 Logo', '确定清除当前 Logo？', () => {
+    const cfg = Store.get(KEYS.siteConfig, {});
+    cfg.logo = '';
+    Store.set(KEYS.siteConfig, cfg);
+    refreshMedia();
+    toast('已清除', 'success');
+  });
+});
+
+$('adm-btnUploadBg').addEventListener('click', () => $('adm-fileBg').click());
+$('adm-fileBg').addEventListener('change', e => {
+  const file = e.target.files[0];
+  uploadImage(file, 800, dataUrl => {
+    const cfg = Store.get(KEYS.siteConfig, {});
+    cfg.background = dataUrl;
+    Store.set(KEYS.siteConfig, cfg);
+    refreshMedia();
+    toast('背景图已更新', 'success');
+    e.target.value = '';
+  });
+});
+$('adm-btnClearBg').addEventListener('click', () => {
+  confirmDialog('清除背景图', '确定清除当前背景图？', () => {
+    const cfg = Store.get(KEYS.siteConfig, {});
+    cfg.background = '';
+    Store.set(KEYS.siteConfig, cfg);
+    refreshMedia();
+    toast('已清除', 'success');
+  });
+});
+
+/* ============= 备案管理 ============= */
+function loadRecord() {
+  const cfg = Store.get(KEYS.siteConfig, {});
+  $('adm-cfgICP').value = cfg.icp || '';
+  $('adm-cfgPolice').value = cfg.police || '';
+  $('adm-cfgRecordLink').value = cfg.recordLink || '';
+}
+$('adm-btnSaveRecord').addEventListener('click', () => {
+  const cfg = Store.get(KEYS.siteConfig, {});
+  cfg.icp = $('adm-cfgICP').value.trim();
+  cfg.police = $('adm-cfgPolice').value.trim();
+  cfg.recordLink = $('adm-cfgRecordLink').value.trim();
+  Store.set(KEYS.siteConfig, cfg);
+  toast('已保存', 'success');
+});
+
+/* ============= AI 审核日志 ============= */
+function refreshAudit() {
+  const logs = Store.get(KEYS.aiReviewLog, []);
+  const search = $('adm-auditSearch').value.trim().toLowerCase();
+  const filter = $('adm-auditFilter').value;
+  const users = Store.get(KEYS.users, []);
+  const userMap = {};
+  users.forEach(u => { userMap[u.id] = u.username; });
+
+  $('adm-auditTotalCount').textContent = logs.length;
+  $('adm-badgeAudit').textContent = logs.filter(l => l.action === 'block').length;
+  $('adm-badgeAudit').style.display = logs.length > 0 ? 'inline-block' : 'none';
+
+  const filtered = logs.filter(l => {
+    if (filter === 'block' && l.action !== 'block') return false;
+    if (filter === 'pass' && l.action !== 'pass') return false;
+    if (search) {
+      const k = ((l.content || '') + ' ' + (userMap[l.userId] || '') + ' ' + ((l.hitKeywords || []).join(','))).toLowerCase();
+      if (!k.includes(search)) return false;
+    }
+    return true;
+  }).slice().reverse(); /* 最新在前 */
+
+  $('adm-auditTableInfo').textContent = `共 ${logs.length} 条 · 显示 ${filtered.length} 条`;
+
+  const tbody = $('adm-auditTableBody');
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #666; padding: 30px;">暂无记录</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filtered.map(l => {
+    const keywords = (l.hitKeywords || []).map(k => `<span class="pill pill-danger" style="margin-right:4px;">${escapeHtml(k)}</span>`).join('');
+    return `<tr>
+      <td style="font-size:12px;color:#888;white-space:nowrap;">${fmtTime(l.createdAt)}</td>
+      <td>${escapeHtml(userMap[l.userId] || '(已删除)')}</td>
+      <td style="max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escapeHtml(l.content || '')}">${escapeHtml(l.content || '')}</td>
+      <td>${keywords || '—'}</td>
+      <td>${l.action === 'block' ? '<span class="pill pill-danger">🚫 拦截</span>' : '<span class="pill pill-success">✅ 通过</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+$('adm-auditSearch').addEventListener('input', refreshAudit);
+$('adm-auditFilter').addEventListener('change', refreshAudit);
+
+$('adm-btnExportAudit').addEventListener('click', () => {
+  const logs = Store.get(KEYS.aiReviewLog, []);
+  downloadJSON(logs, 'ai-review-log-' + Date.now() + '.json');
+  toast('已导出 ' + logs.length + ' 条日志', 'success');
+});
+$('adm-btnClearAudit').addEventListener('click', () => {
+  confirmDialog('清空审核日志', '将清空所有 AI 审核记录，此操作不可恢复。', () => {
+    Store.set(KEYS.aiReviewLog, []);
+    refreshAudit();
+    toast('已清空', 'success');
+  });
+});
+
+/* ============= 系统设置 ============= */
+function loadSettings() {
+  const cfg = Store.get(KEYS.systemConfig, {});
+  $('adm-cfgAllowRegister').checked = cfg.allowRegister !== false;
+  $('adm-cfgAllowPost').checked = cfg.allowPost !== false;
+  $('adm-cfgEnableAI').checked = cfg.enableAI !== false;
+  $('adm-cfgEnableAudit').checked = cfg.enableAudit !== false;
+}
+$('adm-btnSaveSettings').addEventListener('click', () => {
+  const cfg = {
+    allowRegister: $('adm-cfgAllowRegister').checked,
+    allowPost: $('adm-cfgAllowPost').checked,
+    enableAI: $('adm-cfgEnableAI').checked,
+    enableAudit: $('adm-cfgEnableAudit').checked,
+  };
+  Store.set(KEYS.systemConfig, cfg);
+  toast('已保存设置', 'success');
+});
+
+$('adm-btnExportAll').addEventListener('click', () => {
+  const data = {};
+  Object.values(KEYS).forEach(k => {
+    const v = localStorage.getItem(k);
+    if (v != null) {
+      try { data[k] = JSON.parse(v); } catch (e) { data[k] = v; }
+    }
+  });
+  data.__exportedAt = new Date().toISOString();
+  data.__source = '光影巨树 · 管理后台';
+  downloadJSON(data, 'finallly-backup-' + Date.now() + '.json');
+  toast('已导出全部数据', 'success');
+});
+
+$('adm-btnImportAll').addEventListener('click', () => $('adm-importFile').click());
+$('adm-importFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (typeof data !== 'object' || Array.isArray(data)) throw new Error('格式错误');
+      confirmDialog('导入数据', '将覆盖当前数据，确定导入？', () => {
+        let count = 0;
+        Object.keys(data).forEach(k => {
+          if (k.startsWith('__')) return;
+          if (Object.values(KEYS).includes(k)) {
+            Store.set(k, data[k]);
+            count++;
+          }
+        });
+        toast(`已导入 ${count} 项数据`, 'success');
+        refreshAll();
+      });
+    } catch (err) {
+      toast('文件解析失败：' + err.message, 'error');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+});
+
+$('adm-btnClearAll').addEventListener('click', () => {
+  confirmDialog('⚠️ 清空所有数据',
+    '将删除 <strong>所有</strong> 用户、倾诉、帖子、评论、审核日志等数据，<br>此操作 <strong style="color:#ef9a9a;">不可恢复</strong>！',
+    () => {
+      confirmDialog('最终确认', '真的要清空吗？请输入「确认清空」继续：', () => {
+        const input = prompt('请输入「确认清空」以继续：');
+        if (input !== '确认清空') { toast('已取消', 'warn'); return; }
+        Object.values(KEYS).forEach(k => {
+          if (k === 'adminSession') return;
+          localStorage.removeItem(k);
+        });
+        /* 重建 admin */
+        const users = [{
+          id: 'admin-001', username: 'admin',
+          passwordHash: Store.hash('admin123'),
+          role: 'admin', profession: '其他', ageGroup: '26-35',
+          createdAt: Date.now(), status: 'active', avatar: ''
+        }];
+        Store.set(KEYS.users, users);
+        Store.set(KEYS.siteConfig, {
+          banner: '光影巨树 · 基层务工群体互助平台',
+          welcome: '愿这棵树，承载你的每一次倾诉',
+          footer: '本站为前端作品，数据仅保存在本机浏览器',
+          icp: '', police: '', logo: '', background: ''
+        });
+        toast('已清空所有数据', 'success');
+        refreshAll();
+      });
+    });
+});
+
+$('adm-btnChangeAdminPwd').addEventListener('click', () => {
+  const oldPwd = $('adm-oldAdminPwd').value;
+  const newPwd = $('adm-newAdminPwd').value;
+  const cfmPwd = $('adm-cfmAdminPwd').value;
+  if (!oldPwd || !newPwd || !cfmPwd) { toast('请填写完整', 'error'); return; }
+  if (newPwd !== cfmPwd) { toast('两次新密码不一致', 'error'); return; }
+  if (newPwd.length < 6) { toast('新密码至少 6 位', 'error'); return; }
+
+  const session = Store.get(KEYS.adminSession);
+  const users = Store.get(KEYS.users, []);
+  const admin = users.find(u => u.id === session.id);
+  if (!admin) { toast('会话失效，请重新登录', 'error'); return; }
+  if (admin.passwordHash !== Store.hash(oldPwd)) { toast('当前密码错误', 'error'); return; }
+
+  admin.passwordHash = Store.hash(newPwd);
+  Store.set(KEYS.users, users);
+  $('adm-oldAdminPwd').value = '';
+  $('adm-newAdminPwd').value = '';
+  $('adm-cfmAdminPwd').value = '';
+  toast('密码已修改', 'success');
+});
+
+/* ============= 通用 ============= */
+function downloadJSON(obj, filename) {
+  const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 100);
+}
+function refreshAll() {
+  refreshDashboard();
+  refreshUsers();
+  refreshAudit();
+  refreshMedia();
+  loadSettings();
+  $('adm-badgeUsers').textContent = Store.get(KEYS.users, []).length;
+}
+
+/* 窗口缩放重绘图表 */
+window.addEventListener('resize', () => {
+  const dashboard = $('adm-page-dashboard');
+  if (dashboard && dashboard.classList.contains('adm-active')) {
+    refreshDashboard();
+  }
+});
+
+/* 初始化时刷新侧边栏 badge */
+(function initBadges() {
+  if (!$('adm-app').classList.contains('adm-active')) return;
+  refreshAll();
+})();
+
+})();
+
+</script>
+
+<!-- 水印：Beta2 测试版（pointer-events: none，不影响使用） -->
+<div id="betaWatermark" aria-hidden="true"></div>
+
+<!-- Trae 投票悬浮弹窗（右下角，可最小化/关闭） -->
+<div id="voteFab" role="complementary" aria-label="Trae 社区投票">
+  <div class="vote-head">
+    <span class="vote-icon">🗳️</span>
+    <span class="vote-title">支持我们一下</span>
+    <div class="vote-btns">
+      <button class="vote-btn" id="voteBtnMin" title="最小化" aria-label="最小化">－</button>
+      <button class="vote-btn" id="voteBtnClose" title="关闭" aria-label="关闭">×</button>
+    </div>
+  </div>
+  <div class="vote-body">
+    <div class="vote-text">如果你喜欢的话记得投票支持一下 💖</div>
+    <a class="vote-link" href="https://forum.trae.cn/t/topic/46925" target="_blank" rel="noopener" id="voteLink">
+      <span>👍</span><span>点击投票</span>
+    </a>
+    <div class="vote-credit">感谢 Trae 的支持 · 光影巨树团队</div>
+  </div>
+</div>
+
 </body>
 </html>
